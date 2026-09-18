@@ -1,0 +1,6 @@
+{
+  "name": "Vortcoin Network",
+  "description": "VORTCOIN (VORT) combines absolute mathematical scarcity with parallelized monolithic speed and post-quantum cryptographic resilience for Real World Assets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
