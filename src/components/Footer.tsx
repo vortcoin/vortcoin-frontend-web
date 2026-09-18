@@ -19,9 +19,65 @@ import {
 interface FooterProps {
   setActiveTab: (tab: PageTab) => void;
   setActiveDomain: (domain: "vortcoin.org" | "explorer.vortcoin.org") => void;
+  activeDomain?: "vortcoin.org" | "explorer.vortcoin.org";
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActiveTab, setActiveDomain }) => {
+export const Footer: React.FC<FooterProps> = ({ setActiveTab, setActiveDomain, activeDomain = "vortcoin.org" }) => {
+  const isExplorer = activeDomain === "explorer.vortcoin.org";
+
+  if (isExplorer) {
+    return (
+      <footer className="w-full border-t border-amber-500/20 bg-[#06070A] text-slate-400 font-sans mt-16">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg p-0.5 bg-gradient-to-br from-amber-400/60 to-black border border-amber-500/40 overflow-hidden shrink-0">
+              <img src="/logo.png" alt="VORTCOIN" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-white font-display">VORTCOIN Explorer</span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded">
+                  Mainnet Online
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 font-mono">
+                PoAV Layer-1 Genesis Gateway: <code className="text-amber-400">https://rpc.vortcoin.org</code>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-6 text-xs font-mono">
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined" && window.location.hostname.startsWith("explorer")) {
+                  window.location.href = "https://vortcoin.org";
+                } else {
+                  setActiveDomain("vortcoin.org");
+                  setActiveTab("home");
+                }
+              }}
+              className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 transition-colors"
+            >
+              <span>Main Website (vortcoin.org) ↗</span>
+            </button>
+            <a 
+              href="https://github.com/vortcoin" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="hover:text-slate-200 transition-colors"
+            >
+              GitHub Repository
+            </a>
+            <span className="text-slate-700">|</span>
+            <span className="text-slate-500">P2P: 3690 • RPC: 8545</span>
+            <span className="text-slate-700">|</span>
+            <span className="text-slate-500">© 2026 VORTCOIN Foundation</span>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="w-full border-t border-amber-500/20 bg-[#06070A] text-slate-400 font-sans mt-20">
       {/* 3-6-9 Tesla Alignment Banner */}

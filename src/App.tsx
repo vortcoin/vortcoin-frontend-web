@@ -66,6 +66,11 @@ export default function App() {
       rawPath.includes("explorer") || 
       hash === "explorer"
     ) {
+      // If someone accesses /explorer on vortcoin.org, redirect to official subdomain in production
+      if (typeof window !== "undefined" && hostname.includes("vortcoin.org") && !hostname.startsWith("explorer")) {
+        window.location.href = "https://explorer.vortcoin.org";
+        return;
+      }
       setActiveTab("explorer");
       setActiveDomain("explorer.vortcoin.org");
     } else {
@@ -92,20 +97,30 @@ export default function App() {
 
   // Navigate function that updates browser URL bar seamlessly
   const navigateTo = (tab: PageTab) => {
-    setActiveTab(tab);
     if (tab === "explorer") {
+      if (typeof window !== "undefined" && window.location.hostname.includes("vortcoin.org") && !window.location.hostname.startsWith("explorer")) {
+        window.location.href = "https://explorer.vortcoin.org";
+        return;
+      }
+      setActiveTab("explorer");
       setActiveDomain("explorer.vortcoin.org");
     } else {
+      setActiveTab(tab);
       setActiveDomain("vortcoin.org");
     }
 
     // Update URL bar
     if (typeof window !== "undefined" && window.history) {
       let targetPath = "/";
-      if (tab === "whitepaper") targetPath = "/whitepaper";
-      else if (tab === "download") targetPath = "/download&mininghub";
-      else if (tab === "developer") targetPath = "/developer";
-      else if (tab === "explorer") targetPath = "/explorer";
+      if (tab === "explorer" || activeDomain === "explorer.vortcoin.org") {
+        targetPath = "/";
+      } else if (tab === "whitepaper") {
+        targetPath = "/whitepaper";
+      } else if (tab === "download") {
+        targetPath = "/download&mininghub";
+      } else if (tab === "developer") {
+        targetPath = "/developer";
+      }
 
       // Only push if current path is different
       if (window.location.pathname !== targetPath) {
@@ -117,7 +132,7 @@ export default function App() {
   // Scroll to top when tab changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [activeTab]);
+  }, [activeTab, activeDomain]);
 
   return (
     <div className="min-h-screen bg-[#08090D] text-[#E2E8F0] flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200">
@@ -157,6 +172,7 @@ export default function App() {
       <Footer
         setActiveTab={navigateTo}
         setActiveDomain={setActiveDomain}
+        activeDomain={activeDomain}
       />
     </div>
   );
