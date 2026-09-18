@@ -36,7 +36,7 @@ Official decentralized web portal, blockchain explorer, developer JSON-RPC gatew
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/vortcoin-org/vortcoin-frontend-web.git
+git clone https://github.com/vortcoin/vortcoin-frontend-web.git
 cd vortcoin-frontend-web
 
 # Install dependencies
