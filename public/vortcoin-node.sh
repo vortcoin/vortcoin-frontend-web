@@ -48,15 +48,11 @@ echo "Network ports 3690 (P2P) and 8545 (RPC) have been officially opened."
 # -------------------------------------------------------------------------
 
 # 2. Automatically install the Rust compiler (if not already installed)
-if ! command -v cargo &> /dev/null; then
+if ! [ -f "$ACTUAL_HOME/.cargo/bin/cargo" ]; then
     echo "Rust not found. Installing Rust Compiler (industry standard)..."
-    # Running Rust installation as the original user (not root)
     sudo -u "$ACTUAL_USER" curl --proto '=https' --tlsv1.2 -sSf https://rustup.rs | sudo -u "$ACTUAL_USER" sh -s -- -y
-    # Loads the env path so that the current script session recognizes cargo
-    source "$ACTUAL_HOME/.cargo/env"
-else
-    echo "The Rust compiler is ready for use."
 fi
+export PATH="$ACTUAL_HOME/.cargo/bin:$PATH"
 
 # 3. Downloading the VORTCOIN Core blockchain code from the official repository
 echo "Downloading VORTCOIN Core Engine from the global repository..."
@@ -80,6 +76,22 @@ sudo -u "$ACTUAL_USER" "$ACTUAL_HOME/.cargo/bin/cargo" build --release
 echo "Exposing binary commands ('vortcoin' and 'vortcoin-cli') to system PATH..."
 sudo ln -sf "$ACTUAL_HOME/vortcoin_miner_node/target/release/vortcoin-cli" /usr/local/bin/vortcoin-cli
 sudo ln -sf "$ACTUAL_HOME/vortcoin_miner_node/target/release/vortcoin-cli" /usr/local/bin/vortcoin
+
+# PERBAIKAN: Membuat file genesis.json fair launch otomatis di folder kerja pengguna agar node-start tidak crash
+echo "Synchronizing local fair launch genesis configuration matrix..."
+sudo -u "$ACTUAL_USER" cat << 'EOF' > "$ACTUAL_HOME/vortcoin_miner_node/genesis.json"
+{
+  "network_name": "vortcoin_pure_decentralization_matrix",
+  "genesis_time": 1787336900,
+  "era": 1,
+  "allocations": {},
+  "protocol_constants": {
+    "max_supply_nano": 36900000000000000,
+    "bakar_tax_rate": 0.369
+  }
+}
+EOF
+
 
 # 5. Starting the PoAV Validator Node in the background using Systemd
 echo "Registering the VORTCOIN Node as a Linux background service..."
