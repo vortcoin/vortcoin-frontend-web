@@ -3,7 +3,7 @@ import { VORT_ENVIRONMENT } from "../config";
 
 export const INITIAL_BLOCKS: Block[] = [
   {
-    height: 4224,
+    height: 4292,
     hash: "0x369a489f0293cb837190e2fa8372b01488c994ad51e893c76ef4829377482910",
     previousHash: "0x3697e810a9f145b981ca7b090b8f41128362547190d64801e91238476b71001a",
     timestamp: Date.now() - 14000,
@@ -16,7 +16,7 @@ export const INITIAL_BLOCKS: Block[] = [
     difficulty: 3690,
   },
   {
-    height: 4223,
+    height: 4291,
     hash: "0x3697e810a9f145b981ca7b090b8f41128362547190d64801e91238476b71001a",
     previousHash: "0x3692bf9810ea34190c1287e02934bb6189201948571029384756192837461928",
     timestamp: Date.now() - 44000,
@@ -29,7 +29,7 @@ export const INITIAL_BLOCKS: Block[] = [
     difficulty: 3688,
   },
   {
-    height: 4222,
+    height: 4290,
     hash: "0x3692bf9810ea34190c1287e02934bb6189201948571029384756192837461928",
     previousHash: "0x3699c71928374619283746501928374650192837465019283746501928374650",
     timestamp: Date.now() - 74000,
@@ -42,7 +42,7 @@ export const INITIAL_BLOCKS: Block[] = [
     difficulty: 3685,
   },
   {
-    height: 4221,
+    height: 4289,
     hash: "0x3699c71928374619283746501928374650192837465019283746501928374650",
     previousHash: "0x3695d10928374619283746501928374650192837465019283746501928374650",
     timestamp: Date.now() - 104000,
@@ -55,7 +55,7 @@ export const INITIAL_BLOCKS: Block[] = [
     difficulty: 3680,
   },
   {
-    height: 4220,
+    height: 4288,
     hash: "0x3695d10928374619283746501928374650192837465019283746501928374650",
     previousHash: "0x3691a09827364519283746501928374650192837465019283746501928374650",
     timestamp: Date.now() - 134000,
@@ -72,7 +72,7 @@ export const INITIAL_BLOCKS: Block[] = [
 export const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     hash: "0x9f4a3690c8b7e21a4f09d816a39b201f84ce204918e7d8293746192837461928",
-    blockHeight: 4224,
+    blockHeight: 4292,
     from: "vort_q_00192837465019283746501928374369a489f029",
     to: "vort_q_928374650192837465019283746501928369a489",
     amountVort: 369.0,
@@ -84,7 +84,7 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   },
   {
     hash: "0x82b13690e8c719a4d8172901f481928374650192837465019283746501928374",
-    blockHeight: 4224,
+    blockHeight: 4292,
     from: "vort_q_829104819203847192039481920369a489f0293c",
     to: VORT_ENVIRONMENT.BLACK_HOLE_BURN_ADDRESS,
     amountVort: 36.9,
@@ -96,7 +96,7 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
   },
   {
     hash: "0x77c23690a9b8c719028374650192837465019283746501928374650192837465",
-    blockHeight: 4223,
+    blockHeight: 4291,
     from: "vort_q_1928374650192837465019283369a489f0293cb8",
     to: "vort_q_369a489f0293cb837190e2fa8372b01488c994ad",
     amountVort: 10.0,

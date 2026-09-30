@@ -36,6 +36,10 @@ export const Home: React.FC<HomeProps> = ({ setActiveTab, setActiveDomain, liveB
   const calculatedReward = (VORT_ENVIRONMENT.INITIAL_BLOCK_REWARD / Math.pow(2, calculatedEra - 1)).toFixed(4);
   const totalEraSupply = (36900000 * (1 - Math.pow(0.5, calculatedEra))).toLocaleString();
 
+  // Active network emission dynamic calculations
+  const activeEra = Math.floor((liveBlockHeight - 1) / VORT_ENVIRONMENT.HALVING_CYCLE_BLOCKS) + 1;
+  const activeBlockReward = VORT_ENVIRONMENT.INITIAL_BLOCK_REWARD / Math.pow(2, activeEra - 1);
+
   return (
     <div className="space-y-24">
       {/* 1. HERO SECTION */}
@@ -133,8 +137,8 @@ export const Home: React.FC<HomeProps> = ({ setActiveTab, setActiveDomain, liveB
 
               <div className="space-y-1">
                 <span className="text-[10px] text-slate-500 uppercase tracking-widest block">Block Reward</span>
-                <span className="text-xl font-bold text-white">10.0 VORT</span>
-                <span className="text-[10px] text-slate-400 block">Era 1 Distribution</span>
+                <span className="text-xl font-bold text-white">{activeBlockReward.toFixed(1)} VORT</span>
+                <span className="text-[10px] text-amber-400 block">Era {activeEra} Distribution</span>
               </div>
 
               <div className="space-y-1">

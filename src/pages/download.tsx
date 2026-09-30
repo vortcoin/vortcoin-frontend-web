@@ -489,7 +489,19 @@ export const DownloadPage: React.FC = () => {
             }`}
           >
             <Server className="w-3.5 h-3.5 text-amber-400" />
-            <span>Full Node Validator (Server)</span>
+            <span>Auto Installer Daemon (vortcoin-node.sh)</span>
+          </button>
+
+          <button
+            onClick={() => setInstallerTab("hybrid")}
+            className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              installerTab === "hybrid"
+                ? "bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10"
+                : "bg-black/50 text-slate-400 hover:text-white border border-slate-800"
+            }`}
+          >
+            <Cpu className="w-3.5 h-3.5 text-amber-400" />
+            <span>Hybrid Node Command (Local Sled + RPC Sync)</span>
           </button>
 
           <button
@@ -501,7 +513,7 @@ export const DownloadPage: React.FC = () => {
             }`}
           >
             <Terminal className="w-3.5 h-3.5 text-amber-400" />
-            <span>Quick Client / Light Installer</span>
+            <span>Quick Client / Light Helper</span>
           </button>
         </div>
 
@@ -511,10 +523,16 @@ export const DownloadPage: React.FC = () => {
             <span className="text-slate-400 font-bold block">
               {installerTab === "server"
                 ? "🖥️ Linux Server 24/7 Validator Daemon Setup (vortcoin-node.sh):"
+                : installerTab === "hybrid"
+                ? "⚡ Hybrid Node Execution (Local Sled DB + Remote RPC Coordination):"
                 : "⚡ Desktop / Light Client & Mobile APK Helper (install-node.sh):"}
             </span>
             <span className="text-[10px] text-slate-500 uppercase">
-              {installerTab === "server" ? "Target: Ubuntu / Debian" : "Target: Universal Multi-OS"}
+              {installerTab === "server"
+                ? "Target: Ubuntu / Debian"
+                : installerTab === "hybrid"
+                ? "Target: Multi-Server / CLI"
+                : "Target: Universal Multi-OS"}
             </span>
           </div>
 
@@ -522,6 +540,8 @@ export const DownloadPage: React.FC = () => {
             <code className="text-amber-300 font-bold block select-all break-all sm:text-sm">
               {installerTab === "server"
                 ? VORT_ENVIRONMENT.SERVER_NODE_INSTALL_COMMAND
+                : installerTab === "hybrid"
+                ? "vortcoin node-start --remote https://rpc.vortcoin.org --miner-address YOUR_WALLET_ADDRESS"
                 : VORT_ENVIRONMENT.QUICK_CLIENT_INSTALL_COMMAND}
             </code>
             <button
@@ -529,6 +549,8 @@ export const DownloadPage: React.FC = () => {
                 handleCopyCommand(
                   installerTab === "server"
                     ? VORT_ENVIRONMENT.SERVER_NODE_INSTALL_COMMAND
+                    : installerTab === "hybrid"
+                    ? "vortcoin node-start --remote https://rpc.vortcoin.org --miner-address YOUR_WALLET_ADDRESS"
                     : VORT_ENVIRONMENT.QUICK_CLIENT_INSTALL_COMMAND,
                   installerTab
                 )

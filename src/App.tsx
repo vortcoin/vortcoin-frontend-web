@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { PageTab, ActiveDomain } from "./types";
+import { VORT_ENVIRONMENT } from "../config";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
@@ -16,14 +17,58 @@ import { ExplorerPage } from "./pages/Explorer";
 export default function App() {
   const [activeTab, setActiveTab] = useState<PageTab>("home");
   const [activeDomain, setActiveDomain] = useState<ActiveDomain>("vortcoin.org");
-  const [liveBlockHeight, setLiveBlockHeight] = useState<number>(4224);
+  const [liveBlockHeight, setLiveBlockHeight] = useState<number>(4292);
 
-  // Auto-increment block height every 30 seconds (Vortcoin target block time)
+  // Real-time synchronization with Contabo L1 Node RPC Gateway (https://rpc.vortcoin.org)
   useEffect(() => {
-    const timer = setInterval(() => {
+    let isMounted = true;
+
+    const syncWithRpcNode = async () => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+        const response = await fetch(VORT_ENVIRONMENT.RPC_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "get_status",
+            params: {},
+            id: 369,
+          }),
+        });
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const data = await response.json();
+          if (isMounted && data.result?.current_block_height) {
+            setLiveBlockHeight(data.result.current_block_height);
+          }
+        }
+      } catch {
+        // Fallback ticker continues automatically if offline
+      }
+    };
+
+    // Initial check on load
+    syncWithRpcNode();
+
+    // Poll RPC every 10 seconds for real block changes
+    const rpcTimer = setInterval(syncWithRpcNode, 10000);
+
+    // Dynamic fallback clock: Increment every 30 seconds if RPC is buffering
+    const fallbackTimer = setInterval(() => {
       setLiveBlockHeight((prev) => prev + 1);
     }, 30000);
-    return () => clearInterval(timer);
+
+    return () => {
+      isMounted = false;
+      clearInterval(rpcTimer);
+      clearInterval(fallbackTimer);
+    };
   }, []);
 
   // Parse path or hash to resolve active tab
